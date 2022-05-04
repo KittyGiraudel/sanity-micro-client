@@ -69,9 +69,9 @@ export async function getStaticPaths() {
   const blogPosts = await getEntries({
     conditions: ['_type == "blogPost"'],
     fields: '"slug": slug.current',
-    options: { order: '_createdAt desc' }
+    options: { order: '_createdAt desc' },
   })
-  const paths = blogPosts.map(post => ({ params: { slug: post.slug }}))
+  const paths = blogPosts.map(post => ({ params: { slug: post.slug } }))
 
   return { paths, fallback: 'blocking' }
 }
@@ -89,7 +89,15 @@ export async function getStaticProps(context) {
     return { notFound: true }
   }
 
-  return { props: blogPost }
+  return {
+    props: {
+      // Pass down whether the preview mode is enabled to the view, which can be
+      // handy to render a banner that states that the preview mode is enabled.
+      isPreview,
+      // Return the blog post data (and whatever other props).
+      data: blogPost,
+    },
+  }
 }
 
 export default BlogPost
