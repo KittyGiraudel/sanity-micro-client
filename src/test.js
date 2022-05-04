@@ -1,6 +1,7 @@
 import test from 'ava'
 import {
   ID_FIELD,
+  createQuery,
   isDraftEntry,
   isPublishedEntry,
   isNotSelf,
@@ -55,5 +56,27 @@ test('withoutSanityId', t => {
       foo: 'bar',
     }),
     { foo: 'bar' }
+  )
+})
+
+test('createQuery', t => {
+  t.is(createQuery(), `*[] { ... }`)
+  t.is(
+    createQuery({ conditions: ['_type == "foo"'] }),
+    `*[_type == "foo"] { ... }`
+  )
+  t.is(
+    createQuery({ conditions: ['_type == "foo"', 'slug.current == $bar'] }),
+    `*[_type == "foo" && slug.current == $bar] { ... }`
+  )
+  t.is(createQuery({ fields: 'foo' }), `*[] { foo }`)
+  t.is(createQuery({ options: { slice: '0..2' } }), `*[] { ... } [0..2]`)
+  t.is(
+    createQuery({ options: { order: 'foo asc' } }),
+    `*[] { ... } | order(foo asc)`
+  )
+  t.is(
+    createQuery({ options: { isPreview: true } }),
+    `*[] { "${ID_FIELD}": _id, ... }`
   )
 })

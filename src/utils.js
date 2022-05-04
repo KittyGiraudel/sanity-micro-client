@@ -32,7 +32,7 @@ export const createQuery = ({
   conditions = [],
   fields = '...',
   options = {},
-}) => {
+} = {}) => {
   const grep = `*[${conditions.join(' && ')}]`
   const order = options.order ? `| order(${options.order})` : ''
   const slice = typeof options.slice !== 'undefined' ? `[${options.slice}]` : ''
