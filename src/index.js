@@ -64,7 +64,7 @@ export const getEntries = async (
   return client.fetch(query, params)
 }
 
-const createQuery = ({ conditions, fields = '...', options = {} }) => {
+const createQuery = ({ conditions = [], fields = '...', options = {} }) => {
   const slice = typeof options.slice !== 'undefined' ? `[${options.slice}]` : ''
   const order = options.order ? `| order(${options.order})` : ''
 
