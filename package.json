@@ -1,0 +1,12 @@
+{
+  "name": "sanity-micro-client",
+  "type": "module",
+  "main": "./index.js",
+  "version": "0.1.0",
+  "scripts": {
+    "test": "ava"
+  },
+  "devDependencies": {
+    "ava": "^4.2.0"
+  }
+}
