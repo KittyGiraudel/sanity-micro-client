@@ -65,18 +65,13 @@ export const getEntries = async (
 }
 
 const createQuery = ({ conditions = [], fields = '...', options = {} }) => {
-  const slice = typeof options.slice !== 'undefined' ? `[${options.slice}]` : ''
+  const grep = `*[${conditions.join(' && ')}]`
   const order = options.order ? `| order(${options.order})` : ''
+  const slice = typeof options.slice !== 'undefined' ? `[${options.slice}]` : ''
 
-  return [
-    `*[${conditions.join(' && ')}]`,
-    '{',
-    options.isPreview ? `"${ID_FIELD}": _id, ` : '',
-    fields,
-    '}',
-    order,
-    slice,
-  ]
-    .filter(Boolean)
-    .join(' ')
+  if (options.isPreview) {
+    fields = `"${ID_FIELD}": _id, ` + fields
+  }
+
+  return [grep, '{', fields, '}', order, slice].filter(Boolean).join(' ')
 }
