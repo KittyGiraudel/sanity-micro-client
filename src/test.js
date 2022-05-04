@@ -2,6 +2,7 @@ import test from 'ava'
 import {
   ID_FIELD,
   createQuery,
+  findSameEntry,
   isDraftEntry,
   isPublishedEntry,
   isNotSelf,
@@ -79,4 +80,16 @@ test('createQuery', t => {
     createQuery({ options: { isPreview: true } }),
     `*[] { "${ID_FIELD}": _id, ... }`
   )
+})
+
+test('findSameEntry', t => {
+  const draft = { [ID_FIELD]: 'drafts.091b1dda-81dc-45b7-97f4-61b8fc50a3c1' }
+  const published = { [ID_FIELD]: '091b1dda-81dc-45b7-97f4-61b8fc50a3c1' }
+  const array = [draft, published]
+
+  t.is(findSameEntry(draft, array), published)
+  t.is(findSameEntry(published, array), draft)
+
+  t.is(findSameEntry(published, [published]), undefined)
+  t.is(findSameEntry(draft, [draft]), undefined)
 })
