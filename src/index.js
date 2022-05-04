@@ -1,5 +1,5 @@
 import {
-  ID_FIELD,
+  createQuery,
   isDraftEntry,
   isPublishedEntry,
   preserveDrafts,
@@ -62,16 +62,4 @@ export const getEntries = async (
   }
 
   return client.fetch(query, params)
-}
-
-const createQuery = ({ conditions = [], fields = '...', options = {} }) => {
-  const grep = `*[${conditions.join(' && ')}]`
-  const order = options.order ? `| order(${options.order})` : ''
-  const slice = typeof options.slice !== 'undefined' ? `[${options.slice}]` : ''
-
-  if (options.isPreview) {
-    fields = `"${ID_FIELD}": _id, ` + fields
-  }
-
-  return [grep, '{', fields, '}', order, slice].filter(Boolean).join(' ')
 }
