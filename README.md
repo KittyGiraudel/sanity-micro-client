@@ -59,10 +59,10 @@ const blogPostsFromAuthor = await getEntry(client, previewClient, {
 
 ### With Next.js
 
-Next.js has an [elegant preview mode](https://nextjs.org/docs/advanced-features/preview-mode) which works great with Sanity. A typically page relying on CMS data would look like this (e.g. `/blog/[slug].js`):
+Next.js has an [elegant preview mode](https://nextjs.org/docs/advanced-features/preview-mode) which works great with [Sanity preview feature](https://www.sanity.io/docs/preview-content-on-site). A typical page relying on CMS data would look like this (e.g. `/blog/[slug].js`):
 
 ```js
-import { getEntry } from 'sanity-micro-client'
+import { getEntry, getEntries } from 'sanity-micro-client'
 import BlogPost from '../../components/BlogPost'
 
 export async function getStaticPaths() {
@@ -102,6 +102,8 @@ export async function getStaticProps(context) {
 
 export default BlogPost
 ```
+
+This library is conceptually similar to [next-sanity](https://www.npmjs.com/package/next-sanity), but does not increase the client footprint at all as it doesn’t ship anything additional to the client.
 
 ## Simplifying the API
 
